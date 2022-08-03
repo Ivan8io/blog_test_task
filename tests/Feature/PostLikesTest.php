@@ -19,7 +19,7 @@ class PostLikesTest extends TestCase
         $post = Post::factory()->create();
 
         $this->postJson("/api/posts/{$post->slug}/like")
-             ->assertStatus(Response::HTTP_BAD_REQUEST);
+             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
     public function test_an_unauthenticated_user_cannot_unlike_post(): void
@@ -27,7 +27,7 @@ class PostLikesTest extends TestCase
         $post = Post::factory()->create();
 
         $this->deleteJson("/api/posts/{$post->slug}/like")
-             ->assertStatus(Response::HTTP_BAD_REQUEST);
+             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
     public function test_an_authenticated_user_can_like_post(): void

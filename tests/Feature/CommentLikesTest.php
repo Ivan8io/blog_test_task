@@ -19,7 +19,7 @@ class CommentLikesTest extends TestCase
         $comment = Comment::factory()->create();
 
         $this->postJson("/api/comments/{$comment->id}/like")
-             ->assertStatus(Response::HTTP_BAD_REQUEST);
+             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
     public function test_an_unauthenticated_user_cannot_unlike_comment(): void
@@ -27,7 +27,7 @@ class CommentLikesTest extends TestCase
         $comment = Comment::factory()->create();
 
         $this->deleteJson("/api/comments/{$comment->id}/like")
-             ->assertStatus(Response::HTTP_BAD_REQUEST);
+             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
     public function test_an_authenticated_user_can_like_comments(): void

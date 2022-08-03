@@ -22,7 +22,7 @@ class CommentsTest extends TestCase
 
         $this->postJson("/api/posts/{$post->slug}/comments", [
             'body' => $this->faker->sentence(15),
-        ])->assertStatus(Response::HTTP_BAD_REQUEST);
+        ])->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
     public function test_an_authenticated_user_can_comment_post(): void
@@ -47,7 +47,7 @@ class CommentsTest extends TestCase
         $comment = Comment::factory()->create();
 
         $this->deleteJson("/api/comments/{$comment->id}")
-            ->assertStatus(Response::HTTP_BAD_REQUEST);
+            ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
     public function test_an_authenticated_user_cannot_delete_other_user_comment(): void
@@ -60,7 +60,7 @@ class CommentsTest extends TestCase
         $this->actingAs($user2);
 
         $this->deleteJson("/api/comments/{$comment->id}")
-             ->assertStatus(Response::HTTP_BAD_REQUEST);
+             ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     public function test_an_authenticated_user_can_delete_his_own_comment(): void

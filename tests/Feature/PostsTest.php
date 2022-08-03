@@ -75,7 +75,7 @@ class PostsTest extends TestCase
             'category_id' => $post->category_id,
         ]);
 
-        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     public function test_an_owner_of_post_can_edit_it(): void
@@ -105,7 +105,7 @@ class PostsTest extends TestCase
         $this->actingAs($user2);
 
         $this->deleteJson("/api/posts/{$post->slug}")
-             ->assertStatus(Response::HTTP_BAD_REQUEST);
+             ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     public function test_an_owner_of_post_can_delete_it(): void
@@ -129,6 +129,7 @@ class PostsTest extends TestCase
         $post = Post::factory()->create();
 
         $this->getJson("/api/posts/{$post->slug}")
+            ->assertStatus(Response::HTTP_OK)
              ->assertExactJson(
                  [
                      'data' => [

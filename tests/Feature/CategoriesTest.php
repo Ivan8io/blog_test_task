@@ -6,6 +6,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\Response;
 use Tests\TestCase;
 
 class CategoriesTest extends TestCase
@@ -25,7 +26,7 @@ class CategoriesTest extends TestCase
             'owner_id' => $user->id,
         ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(Response::HTTP_CREATED);
 
         $this->assertDatabaseCount('categories', 1);
     }

@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -39,7 +41,9 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (Throwable $e) {
-            return response(['error' => $e->getMessage()], $e->getCode() ? $e->getCode(): 400);
+            if ($e instanceof AccessDeniedHttpException) {
+                return response(['error' => $e->getMessage()], $e->getStatusCode());
+            }
         });
     }
 }

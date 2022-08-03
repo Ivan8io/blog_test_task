@@ -6,8 +6,8 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
-use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
@@ -29,7 +29,7 @@ class AuthenticationTest extends TestCase
             'surname'               => 'surname'
         ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(Response::HTTP_CREATED);
     }
 
     public function test_a_user_can_login_into_the_application(): void
@@ -42,7 +42,26 @@ class AuthenticationTest extends TestCase
         ]);
 
         $response
-            ->assertStatus(204)
-            ->assertSessionHas('_token');
+            ->assertStatus(Response::HTTP_NO_CONTENT)
+            ->assertSessionHas('auth');
+    }
+
+    public function test_a_user_can_logout_from_the_application()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->postJson('/login', [
+            'username' => $user->username,
+            'password' => 'password'
+        ]);
+
+        $response
+            ->assertStatus(Response::HTTP_NO_CONTENT)
+            ->assertSessionHas('auth');
+
+        $response = $this->postJson('/logout');
+
+        $response->assertStatus(Response::HTTP_NO_CONTENT)
+                 ->assertSessionMissing('auth');
     }
 }
