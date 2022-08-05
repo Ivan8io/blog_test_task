@@ -158,6 +158,18 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'post' => 'post',
+        'title' => 'title',
+        'body' => 'body',
+        'name' => 'name',
+        'category_id' => 'category_id',
+        'surname' => 'surname',
+        'username' => 'username',
+        'password' => 'password',
+        'current_password' => 'current password',
+        'current_password_confirmation' => 'current password confirmation',
+        'new_password' => 'new password',
+    ],
 
 ];
