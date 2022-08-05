@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Models\Like;
-use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
@@ -39,7 +38,7 @@ class ActivitiesController extends Controller
      */
     protected function getUserCommentsWithPostPath(User $user): Collection
     {
-        $comments = Comment::where('owner_id', $user->id)->get();
+        $comments = Comment::where('owner_id', $user->id)->with('post')->get();
 
         foreach ($comments as &$comment) {
             $comment['post_url'] = $comment->post->path();
